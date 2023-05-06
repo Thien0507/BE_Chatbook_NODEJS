@@ -52,6 +52,7 @@ io.on("connection", (socket) => {
     if (to && to !== socket.id) {
       io.to(to).emit("receive-message", data.message);
       data.message.isSend = true;
+      console.log(to, socket.id);
       io.to(socket.id).emit("receive-message", data.message);
     } else {
       data.message.isSend = true;
