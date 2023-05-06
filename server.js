@@ -51,9 +51,13 @@ io.on("connection", (socket) => {
   socket.on("send-message", (data) => {
     const to = userSockets[data.to];
     if (to && to !== socket.id) {
-      io.to(to).emit("receive-message", data.message);
-      data.message.isSend = true;
       console.log(to, socket.id);
+      setTimeout(() => {
+        data.message.isSend = false;
+        io.to(to).emit("receive-message", data.message);
+      }, 2000);
+
+      data.message.isSend = true;
       io.to(socket.id).emit("receive-message", data.message);
     } else {
       data.message.isSend = true;
