@@ -7,7 +7,7 @@ const { Sequelize } = require("sequelize");
 // });
 const sequelize = new Sequelize(
   "postgres://thien:R7L8dtrQSColP9LDjvbqXj7UlKXNgUyT@dpg-chb2t367avjcvo3hfvmg-a.singapore-postgres.render.com/cb"
-); // Example for postgres
+);
 
 const connectDatabase = async () => {
   try {
