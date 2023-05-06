@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+require("dotenv").config();
 require("./src/database/connectDb");
 const cookieParser = require("cookie-parser");
 
@@ -32,7 +33,7 @@ app.use(globalErrorHandler);
 const server = require("http").Server(app);
 const io = require("socket.io")(server, {
   cors: {
-    origin: "http://localhost:4200",
+    origin: process.env.FE_HOST || 4200,
     methods: ["GET", "POST"],
   },
 });
