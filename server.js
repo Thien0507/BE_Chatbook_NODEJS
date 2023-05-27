@@ -4,6 +4,7 @@ const app = express();
 require("dotenv").config();
 require("./src/database/connectDb");
 const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
 
 const userRouter = require("./src/routes/user.route");
 const friendRouter = require("./src/routes/friend.route");
@@ -40,7 +41,8 @@ const io = require("socket.io")(server, {
 
 const userSockets = {};
 io.on("connection", (socket) => {
-  const userId = socket.handshake.query.userId;
+  const { id } = jwt.verify(socket.handshake.query.token, "DTVT_K65");
+  userId = id;
   userSockets[userId] = socket.id;
   console.log("A user connected with Id ", socket.id);
 
@@ -51,12 +53,14 @@ io.on("connection", (socket) => {
   socket.on("send-message", (data) => {
     const to = userSockets[data.to];
     if (to && to !== socket.id) {
+      console.log("Sended a message");
       console.log(to, socket.id);
       data.message.isSend = true;
       io.to(socket.id).emit("receive-message", data.message);
       data.message.isSend = false;
       io.to(to).emit("receive-message", data.message);
     } else {
+      console.log("Sended a message");
       data.message.isSend = true;
       io.to(socket.id).emit("receive-message", data.message);
     }
