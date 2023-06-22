@@ -2,7 +2,6 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 require("dotenv").config();
-require("./src/database/connectDb");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 
@@ -12,7 +11,6 @@ const messageRouter = require("./src/routes/message.route");
 const reactionRouter = require("./src/routes/reaction.route");
 const actionRouter = require("./src/routes/action.route");
 const { globalErrorHandler } = require("./src/controllers/error.controller");
-const { log } = require("console");
 const PORT = 8000;
 
 app.use(cors());
@@ -37,10 +35,20 @@ app.use(globalErrorHandler);
 const server = require("http").Server(app);
 const io = require("socket.io")(server, {
   cors: {
-    origin: process.env.FE_HOST || 4200,
+    origin:
+      process.env.NODE_ENV === "production"
+        ? "https://chatbook-thien0507.vercel.app"
+        : 4200,
     methods: ["GET", "POST"],
   },
 });
+
+console.log(
+  process.env.NODE_ENV === "production"
+    ? "https://chatbook-thien0507.vercel.app"
+    : 4200
+);
+
 module.exports = io;
 
 const userSockets = {};

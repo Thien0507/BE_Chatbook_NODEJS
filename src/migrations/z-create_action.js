@@ -25,14 +25,6 @@ module.exports = {
           key: "id",
         },
       },
-      reactionId: {
-        allowNull: true,
-        type: Sequelize.INTEGER,
-        references: {
-          model: "Reactions",
-          key: "id",
-        },
-      },
       user2Id: {
         allowNull: false,
         type: Sequelize.INTEGER,

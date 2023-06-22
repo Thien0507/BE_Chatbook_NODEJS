@@ -22,10 +22,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "messageId",
         as: "Message",
       });
-      Action.belongsTo(models.Reaction, {
-        foreignKey: "reactionId",
-        as: "Reaction",
-      });
     }
   }
   Action.init(
@@ -33,7 +29,6 @@ module.exports = (sequelize, DataTypes) => {
       user1Id: { type: DataTypes.INTEGER, allowNull: false },
       user2Id: { type: DataTypes.INTEGER, allowNull: false },
       messageId: { type: DataTypes.INTEGER, allowNull: true },
-      reactionId: { type: DataTypes.INTEGER, allowNull: true },
       status: {
         type: DataTypes.ENUM("pending", "accepted", "rejected"),
         defaultValue: "pending",
@@ -46,11 +41,11 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       type: {
-        type: DataTypes.ENUM("friendship", "message", "reaction"),
+        type: DataTypes.ENUM("friendship", "message"),
         allowNull: false,
         validate: {
           isIn: {
-            args: [["friendship", "message", "reaction"]],
+            args: [["friendship", "message"]],
             msg: "Invalid value for type",
           },
         },

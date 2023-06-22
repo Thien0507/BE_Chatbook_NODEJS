@@ -9,7 +9,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Message.hasMany(models.Reaction, { foreignKey: "messageId" });
       Message.belongsTo(models.User, { foreignKey: "senderId", as: "User1" });
       Message.belongsTo(models.User, {
         foreignKey: "recipientId",
