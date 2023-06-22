@@ -20,11 +20,6 @@ exports.findAllAction = async (req, res) => {
           as: "Message",
           attributes: ["id", "type", "messageText"],
         },
-        {
-          model: Reaction,
-          as: "Reaction",
-          attributes: ["id", "emojiId"],
-        },
       ],
       where: {
         user2Id: id,
