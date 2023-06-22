@@ -7,14 +7,15 @@ exports.updateMe = async (req, res) => {
     }
 
     const filterBody = {};
-    const field = ["name", "email"];
+    const field = ["picture"];
 
     Object.keys(req.body).forEach((key) => {
       if (field.includes(key)) {
         filterBody[key] = req.body[key];
       }
     });
-    const updateUser = await User.findOne({ where: { id: req.params.id } });
+
+    const updateUser = await User.findOne({ where: { id: req.user.id } });
     if (!updateUser) {
       throw new Error("User not found");
     }
@@ -92,10 +93,10 @@ exports.restoreMe = async (req, res) => {
 exports.findUser = async (req, res) => {
   try {
     const user = await User.findOne({
-      where: { id: req.params.id | req.user.id },
+      where: { id: req.query.id || req.user.id },
       raw: true,
       logging: false,
-      attributes: ["id", "name", "username", "picture", "email"],
+      attributes: ["id", "username", "picture"],
     });
     if (!user) throw new Error("User not found");
     res.status(200).json({
@@ -114,7 +115,7 @@ exports.findAllUsers = async (req, res) => {
   try {
     const users = await User.findAll({
       logging: false,
-      attributes: ["id", "name", "username", "picture", "email"],
+      attributes: ["id", "username", "picture"],
     });
     if (!users) throw new Error("Users not found");
     res.status(200).json({

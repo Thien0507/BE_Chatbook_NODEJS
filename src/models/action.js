@@ -9,14 +9,31 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Action.belongsTo(models.User, { foreignKey: "user1Id" });
-      Action.belongsTo(models.User, { foreignKey: "user2Id" });
+      Action.belongsTo(models.User, {
+        foreignKey: "user1Id",
+        as: "User1",
+      });
+      Action.belongsTo(models.User, {
+        foreignKey: "user2Id",
+        as: "User2",
+      });
+      // test
+      Action.belongsTo(models.Message, {
+        foreignKey: "messageId",
+        as: "Message",
+      });
+      Action.belongsTo(models.Reaction, {
+        foreignKey: "reactionId",
+        as: "Reaction",
+      });
     }
   }
   Action.init(
     {
       user1Id: { type: DataTypes.INTEGER, allowNull: false },
       user2Id: { type: DataTypes.INTEGER, allowNull: false },
+      messageId: { type: DataTypes.INTEGER, allowNull: true },
+      reactionId: { type: DataTypes.INTEGER, allowNull: true },
       status: {
         type: DataTypes.ENUM("pending", "accepted", "rejected"),
         defaultValue: "pending",

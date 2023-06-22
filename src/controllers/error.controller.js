@@ -3,5 +3,5 @@ exports.globalErrorHandler = (err, req, res, next) => {
   err.status = err.status || "error";
   res
     .status(err.statusCode)
-    .json({ status: "Some thing  failed", error: err.message });
+    .json({ status: "Something  failed", error: err.message });
 };

@@ -1,5 +1,6 @@
 const { Message, Action, User } = require("../models");
 const { Op } = require("sequelize");
+const io = require("./../../server");
 exports.sendMessage = async (req, res) => {
   try {
     const { body } = req;
@@ -9,10 +10,12 @@ exports.sendMessage = async (req, res) => {
         "Invalid request: 'senderId', 'recipientId', 'messageText' fields are required"
       );
     }
+
     const newMessage = await Message.create({
       senderId,
       recipientId: body.recipientId,
       messageText: body.messageText,
+      type: body.type,
     });
 
     // Create action for sending message
@@ -20,6 +23,7 @@ exports.sendMessage = async (req, res) => {
     const sendMsg = await Action.create({
       user1Id: req.user.id,
       user2Id: body.recipientId,
+      messageId: newMessage.id,
       type: "message",
       status: "accepted",
     });
@@ -74,12 +78,15 @@ exports.getConversations = async (req, res) => {
       raw: true,
       logging: false,
     });
+
     let lastConversation = [];
+
     const users = conversations.reduce((result, conversation) => {
       const otherUserId =
         conversation.senderId === req.user.id
           ? conversation.recipientId
           : conversation.senderId;
+
       if (!result.includes(otherUserId)) {
         result.push(otherUserId);
         lastConversation.push(conversation);
@@ -92,7 +99,7 @@ exports.getConversations = async (req, res) => {
         users.map((userId) =>
           User.findOne({
             where: { id: userId },
-            attributes: ["id", "username", "picture", "name"],
+            attributes: ["id", "username", "picture"],
             raw: true,
             logging: false,
           })

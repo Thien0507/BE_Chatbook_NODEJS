@@ -27,7 +27,12 @@ module.exports = {
       },
       messageText: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(1000),
+      },
+      type: {
+        allowNull: false,
+        type: Sequelize.ENUM("text", "image", "video"),
+        defaultValue: "text",
       },
       createdAt: {
         allowNull: false,

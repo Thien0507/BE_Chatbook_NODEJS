@@ -31,6 +31,7 @@ exports.sendReact = async (req, res) => {
     const sendReact = await Action.create({
       user1Id: body.userId,
       user2Id: 1,
+      reactionId: newReaction.id,
       type: "reaction",
       status: "accepted",
     });

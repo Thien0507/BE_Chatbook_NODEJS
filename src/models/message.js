@@ -10,15 +10,29 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Message.hasMany(models.Reaction, { foreignKey: "messageId" });
-      Message.belongsTo(models.User, { foreignKey: "senderId" });
-      Message.belongsTo(models.User, { foreignKey: "recipientId" });
+      Message.belongsTo(models.User, { foreignKey: "senderId", as: "User1" });
+      Message.belongsTo(models.User, {
+        foreignKey: "recipientId",
+        as: "User2",
+      });
     }
   }
   Message.init(
     {
       senderId: DataTypes.INTEGER,
       recipientId: DataTypes.NUMBER,
-      messageText: DataTypes.STRING,
+      messageText: DataTypes.STRING(1000),
+      type: {
+        type: DataTypes.ENUM("text", "image", "video"),
+        defaultValue: "text",
+        allowNull: false,
+        validate: {
+          isIn: {
+            args: [["text", "image", "video"]],
+            msg: "Invalid value for type",
+          },
+        },
+      },
     },
     {
       sequelize,

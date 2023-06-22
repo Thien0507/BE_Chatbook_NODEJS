@@ -9,10 +9,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      name: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
       username: {
         unique: true,
         type: Sequelize.STRING,
@@ -21,14 +17,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      email: {
-        unique: true,
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
       picture: {
-        type: Sequelize.STRING,
-        defaultValue: "default.jpg",
+        type: Sequelize.STRING(1000),
+        defaultValue:
+          "https://firebasestorage.googleapis.com/v0/b/project1-ad195.appspot.com/o/thien%2Fdefault-image.png?alt=media&token=68763a44-9a68-4de7-827f-1bf4e9766672&_gl=1*hbiuj6*_ga*NDA0MDQxODkzLjE2ODIyNjA2Njc.*_ga_CW55HF8NVT*MTY4NjMyNDkxMC4xNS4xLjE2ODYzMjUwMzkuMC4wLjA.",
         allowNull: false,
       },
       role: {

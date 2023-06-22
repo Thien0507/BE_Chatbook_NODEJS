@@ -10,7 +10,9 @@ const userRouter = require("./src/routes/user.route");
 const friendRouter = require("./src/routes/friend.route");
 const messageRouter = require("./src/routes/message.route");
 const reactionRouter = require("./src/routes/reaction.route");
+const actionRouter = require("./src/routes/action.route");
 const { globalErrorHandler } = require("./src/controllers/error.controller");
+const { log } = require("console");
 const PORT = 8000;
 
 app.use(cors());
@@ -23,6 +25,7 @@ app.use("/user", userRouter);
 app.use("/friend", friendRouter);
 app.use("/chat", messageRouter);
 app.use("/reaction", reactionRouter);
+app.use("/action", actionRouter);
 
 app.all("*", (req, res, next) => {
   const error = new Error("This route is not allowed");
@@ -38,6 +41,7 @@ const io = require("socket.io")(server, {
     methods: ["GET", "POST"],
   },
 });
+module.exports = io;
 
 const userSockets = {};
 io.on("connection", (socket) => {
@@ -51,6 +55,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send-message", (data) => {
+    console.log("abc");
     const to = userSockets[data.to];
     if (to && to !== socket.id) {
       console.log("Sended a message");
