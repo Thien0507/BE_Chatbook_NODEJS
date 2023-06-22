@@ -58,16 +58,10 @@ io.on("connection", (socket) => {
   userSockets[userId] = socket.id;
   console.log("A user connected with Id ", socket.id);
 
-  socket.on("room", (id) => {
-    console.log(id);
-  });
-
   socket.on("send-message", (data) => {
-    console.log("abc");
     const to = userSockets[data.to];
     if (to && to !== socket.id) {
-      console.log("Sended a message");
-      console.log(to, socket.id);
+      console.log(`${socket.id} sended a message to ${to}`);
       data.message.isSend = true;
       io.to(socket.id).emit("receive-message", data.message);
       data.message.isSend = false;

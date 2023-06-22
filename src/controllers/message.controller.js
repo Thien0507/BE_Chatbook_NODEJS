@@ -11,22 +11,28 @@ exports.sendMessage = async (req, res) => {
       );
     }
 
-    const newMessage = await Message.create({
-      senderId,
-      recipientId: body.recipientId,
-      messageText: body.messageText,
-      type: body.type,
-    });
+    const newMessage = await Message.create(
+      {
+        senderId,
+        recipientId: body.recipientId,
+        messageText: body.messageText,
+        type: body.type,
+      },
+      { logging: false }
+    );
 
     // Create action for sending message
 
-    const sendMsg = await Action.create({
-      user1Id: req.user.id,
-      user2Id: body.recipientId,
-      messageId: newMessage.id,
-      type: "message",
-      status: "accepted",
-    });
+    const sendMsg = await Action.create(
+      {
+        user1Id: req.user.id,
+        user2Id: body.recipientId,
+        messageId: newMessage.id,
+        type: "message",
+        status: "accepted",
+      },
+      { logging: false }
+    );
 
     res.status(201).json({ status: "success", newMessage, sendMsg });
   } catch (error) {
