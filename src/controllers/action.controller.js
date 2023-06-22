@@ -2,7 +2,7 @@ const { Action, User, Message, Reaction } = require("../models");
 const { Op, Sequelize } = require("sequelize");
 
 const dayAgo = new Date();
-dayAgo.setDate(dayAgo.getDate() - 1);
+dayAgo.setDate(dayAgo.getDate() - 3);
 
 exports.findAllAction = async (req, res) => {
   try {
