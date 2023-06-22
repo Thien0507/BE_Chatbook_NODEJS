@@ -1,4 +1,4 @@
-const { Action, User, Message, Reaction } = require("../models");
+const { Action, User, Message } = require("../models");
 const { Op, Sequelize } = require("sequelize");
 
 const dayAgo = new Date();
@@ -27,14 +27,7 @@ exports.findAllAction = async (req, res) => {
           [Op.gte]: dayAgo,
         },
       },
-      attributes: [
-        "id",
-        "createdAt",
-        "messageId",
-        "reactionId",
-        "status",
-        "type",
-      ],
+      attributes: ["id", "createdAt", "messageId", "status", "type"],
       order: [["createdAt", "DESC"]],
       logging: false,
     });
