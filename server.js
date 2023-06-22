@@ -35,20 +35,10 @@ app.use(globalErrorHandler);
 const server = require("http").Server(app);
 const io = require("socket.io")(server, {
   cors: {
-    origin:
-      process.env.NODE_ENV === "production"
-        ? "https://chatbook-thien0507.vercel.app"
-        : 4200,
+    origin: process.env.FE_HOST || 4200,
     methods: ["GET", "POST"],
   },
 });
-
-console.log(
-  process.env.NODE_ENV === "production"
-    ? "https://chatbook-thien0507.vercel.app"
-    : 4200
-);
-
 module.exports = io;
 
 const userSockets = {};
